@@ -1,8 +1,10 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const userRoute = require("./routes/userRoute");
-// const { sequelize } = require("./models");
+const hotelOwnerRoute = require("./routes/hotelOwnerRoute");
 
+// const { sequelize } = require("./models");
 // sequelize.sync({ force: true }); // sync แล้วให้ comment เลย
 
 const app = express();
@@ -12,6 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/users", userRoute);
+app.use("/hotelOwners", hotelOwnerRoute);
 
 // เอาไว้ดักเวลาหาไม่เจอ
 app.use((req, res, next) => {

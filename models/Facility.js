@@ -16,9 +16,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Facility.associate = (models) => {
-    Facility.belongsTo(models.Resident, {
+    Facility.hasMany(models.FacilityItem, {
       foreignKey: {
-        name: "residentId",
+        name: "facilityId",
         allowNull: false,
       },
       onDelete: "RESTRICT",

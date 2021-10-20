@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       imageIdURL: {
-        type: DataTypes.TEXT,
+        type: DataTypes.JSON,
         allowNull: false,
       },
     },

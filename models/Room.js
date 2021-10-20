@@ -3,12 +3,10 @@ module.exports = (sequelize, DataTypes) => {
     "Room",
     {
       typeOf: {
-        // STRING หรือ ENUM ดีไหม
         type: DataTypes.STRING,
         allowNull: false,
       },
       roomDetail: {
-        // เก็บเป็น ENUM ดีไหม
         type: DataTypes.STRING,
         allowNull: false,
       },

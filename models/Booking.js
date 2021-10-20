@@ -7,23 +7,23 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       checkInDate: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
       },
       checkOutDate: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
       },
       serviceFee: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL(15, 2),
         allowNull: false,
       },
       totalPrice: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL(15, 2),
         allowNull: false,
       },
       status: {
-        type: DataTypes.ENUM("success", "fail"),
+        type: DataTypes.ENUM("cancle", "paid"),
         allowNull: false,
       },
     },

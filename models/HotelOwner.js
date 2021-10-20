@@ -32,7 +32,8 @@ module.exports = (sequelize, DataTypes) => {
       },
       idCardImage: {
         type: DataTypes.TEXT,
-        allowNull: false,
+        // allowNull: false,
+        allowNull: true,
       },
     },
     {

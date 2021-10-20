@@ -20,9 +20,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Service.associate = (models) => {
-    Service.belongsTo(models.Resident, {
+    Service.hasMany(models.ServiceItem, {
       foreignKey: {
-        name: "residentId",
+        name: "serviceId",
         allowNull: false,
       },
       onDelete: "RESTRICT",

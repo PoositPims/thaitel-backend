@@ -3,13 +3,11 @@ module.exports = (sequelize, DataTypes) => {
     "AssignRoom",
     {
       checkInDate: {
-        // เก็บเป็น date ?
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
       },
       checkOutDate: {
-        // เก็บเป็น date ?
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
       },
     },

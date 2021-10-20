@@ -3,8 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     "Resident",
     {
       typeOf: {
-        // STRING หรือ ENUM ดีไหม
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM("HOTEL", "APARTMENT", "VILLA"),
         allowNull: false,
       },
       name: {
@@ -12,8 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       rateStar: {
-        // string หรือ ตัวเลข
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       address: {
@@ -36,24 +34,17 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      policy: {
-        // จำเป็นต้องมีไหม ???
-        // เก็บเป็น ENUM ดีไหม
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
       timeCheckIn: {
-        // เก็บเป็น Date ดีไหม
-        type: DataTypes.STRING,
+        type: DataTypes.DATEONLY,
         allowNull: false,
       },
       timeCheckOut: {
-        // เก็บเป็น Date ดีไหม
-        type: DataTypes.STRING,
+        type: DataTypes.DATEONLY,
         allowNull: false,
       },
       cancleDate: {
-        type: DataTypes.DATE,
+        type: DataTypes.BOOLEAN,
+        // คืนเงินไม่คืนเงิน
         allowNull: true,
       },
     },
@@ -70,7 +61,7 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: "RESTRICT",
       onUpdate: "RESTRICT",
     });
-    Resident.hasMany(models.Service, {
+    Resident.hasMany(models.ServiceItem, {
       foreignKey: {
         name: "residentId",
         allowNull: false,
@@ -78,7 +69,7 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: "RESTRICT",
       onUpdate: "RESTRICT",
     });
-    Resident.hasMany(models.Facility, {
+    Resident.hasMany(models.FacilityItem, {
       foreignKey: {
         name: "residentId",
         allowNull: false,
