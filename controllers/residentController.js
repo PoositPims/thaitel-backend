@@ -1,9 +1,11 @@
-const { Resident, Room } = require("../models");
+const { Resident, Room, ResidentImg } = require("../models");
 
 // get all resident
 exports.getAllResident = async (req, res, next) => {
   try {
-    const resident = await Resident.findAll({});
+    const resident = await Resident.findAll({
+      include: ResidentImg,
+    });
     // console.log("resident...............", resident);
     res.json({ resident });
   } catch (err) {
