@@ -1,7 +1,11 @@
 module.exports = (Sequelize, DataTypes) => {
-  const ServiceItem = Sequelize.define("ServiceItem", {
-    underscored: true,
-  });
+  const ServiceItem = Sequelize.define(
+    "ServiceItem",
+    {},
+    {
+      underscored: true,
+    }
+  );
   ServiceItem.associate = (models) => {
     ServiceItem.belongsTo(models.Resident, {
       foreignKey: {

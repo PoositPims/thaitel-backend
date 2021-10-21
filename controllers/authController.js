@@ -11,8 +11,7 @@ exports.authenticate = async (req, res, next) => {
     if (!token) {
       return res.status(401).json({ message: "you are unauthorized" });
     }
-    // const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    // ยังไม่ได้แบ่ง role ชัดเจน
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
   } catch (err) {
     next(err);
   }

@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      OptionalRoomDetail: {
+      optionalRoomDetail: {
         type: DataTypes.STRING,
         allowNull: true,
       },
@@ -36,7 +36,8 @@ module.exports = (sequelize, DataTypes) => {
       },
       imgURL: {
         type: DataTypes.TEXT,
-        allowNull: false,
+        // allowNull: false,
+        allowNull: true,
       },
       maxGuest: {
         type: DataTypes.INTEGER,
