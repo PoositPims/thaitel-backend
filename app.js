@@ -7,6 +7,8 @@ const residentRoute = require("./routes/residentRoute");
 const roomRoute = require("./routes/roomRoute");
 const serviceItemRoute = require("./routes/serviceItemRoute");
 const residentImgRoute = require("./routes/residentImgRoute");
+const bankAccountRoute = require("./routes/bankAccountRoute");
+const roomNumberRoute = require("./routes/roomNumberRoute");
 
 // const { sequelize } = require("./models");
 // sequelize.sync({ force: true }); // sync แล้วให้ comment เลย
@@ -23,6 +25,8 @@ app.use("/residents", residentRoute);
 app.use("/rooms", roomRoute);
 app.use("/serviceItems", serviceItemRoute);
 app.use("/residentImgs", residentImgRoute);
+app.use("/backAccounts", bankAccountRoute);
+app.use("/roomNumbers", roomNumberRoute);
 
 // เอาไว้ดักเวลาหาไม่เจอ
 app.use((req, res, next) => {

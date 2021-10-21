@@ -50,6 +50,9 @@ exports.createResident = async (req, res, next) => {
       dateCheckOut,
       canCancle,
       hotelOwnerId,
+      services, // [{ id: 1, isFree: true, fee: 0 }, { id: 2, isFree: false, fee: 100 }]
+      // ให้หน้าบ้านส่งมาแบบนี้ (services).............. !!!!!!!!!!!!!!!!!!!!
+      // facilities //  [1,2.3,4]
     } = req.body;
 
     const dateForCheckIn = new Date(dateCheckIn);
@@ -71,6 +74,32 @@ exports.createResident = async (req, res, next) => {
       canCancle,
       hotelOwnerId: req.hotelOwner.id,
     });
+
+    const serviceItemToCreate = services.map((item) => {
+      let items = {};
+      items.serviceId = item.id;
+      items.residentId = resident.id;
+      items.isFree = item.isFree;
+      items.pricePerTime = item.pricePerTime;
+      return items;
+    });
+
+    // ServiceItem.create({
+    //   serviceId: 1,
+    //   residentId: resident.id,
+    //   isFree: true,
+    //   pricePerTime: 0,
+    // });
+
+    // ServiceItem.create({
+    //   serviceId: 2,
+    //   residentId: resident.id,
+    //   isFree: false,
+    //   pricePerTime: 100,
+    // });
+
+    ServiceItem.bulkCreate(serviceItemToCreate);
+
     res.status(201).json({ resident });
   } catch (err) {
     next(err);
