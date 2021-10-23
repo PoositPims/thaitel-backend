@@ -6,14 +6,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      isFree: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-      },
-      pricePerTime: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
     },
     {
       underscored: true,

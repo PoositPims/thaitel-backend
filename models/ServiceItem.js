@@ -1,7 +1,16 @@
 module.exports = (Sequelize, DataTypes) => {
   const ServiceItem = Sequelize.define(
     "ServiceItem",
-    {},
+    {
+      isFree: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
+      pricePerTime: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+    },
     {
       underscored: true,
     }

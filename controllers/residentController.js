@@ -1,4 +1,4 @@
-const { Resident, Room, ResidentImg } = require("../models");
+const { Resident, Room, ResidentImg, ServiceItem } = require("../models");
 
 // get all resident
 exports.getAllResident = async (req, res, next) => {
@@ -50,7 +50,7 @@ exports.createResident = async (req, res, next) => {
       dateCheckOut,
       canCancle,
       hotelOwnerId,
-      services, // [{ id: 1, isFree: true, fee: 0 }, { id: 2, isFree: false, fee: 100 }]
+      services, // [{ serviceId: 1, isFree: true, pricePerTime: 0 }, { serviceId: 2, isFree: false, pricePerTime: 100 }]
       // ให้หน้าบ้านส่งมาแบบนี้ (services).............. !!!!!!!!!!!!!!!!!!!!
       // facilities //  [1,2.3,4]
     } = req.body;
@@ -77,7 +77,7 @@ exports.createResident = async (req, res, next) => {
 
     const serviceItemToCreate = services.map((item) => {
       let items = {};
-      items.serviceId = item.id;
+      items.serviceId = item.serviceId;
       items.residentId = resident.id;
       items.isFree = item.isFree;
       items.pricePerTime = item.pricePerTime;
