@@ -1,4 +1,10 @@
-const { Resident, Room, ResidentImg, ServiceItem } = require("../models");
+const {
+  Resident,
+  Room,
+  ResidentImg,
+  ServiceItem,
+  Service,
+} = require("../models");
 
 // get all resident
 exports.getAllResident = async (req, res, next) => {
@@ -73,8 +79,10 @@ exports.createResident = async (req, res, next) => {
       dateCheckOut: dateForCheckOut,
       canCancle,
       hotelOwnerId: req.hotelOwner.id,
+      services,
     });
 
+    // สร้างแบบนี้ [{ serviceId: 1, isFree: true, pricePerTime: 0 }, {}]
     const serviceItemToCreate = services.map((item) => {
       let items = {};
       items.serviceId = item.serviceId;
@@ -90,15 +98,11 @@ exports.createResident = async (req, res, next) => {
     //   isFree: true,
     //   pricePerTime: 0,
     // });
-
-    // ServiceItem.create({
-    //   serviceId: 2,
-    //   residentId: resident.id,
-    //   isFree: false,
-    //   pricePerTime: 100,
-    // });
-
     ServiceItem.bulkCreate(serviceItemToCreate);
+
+    await Service.create({
+      name: "",
+    });
 
     res.status(201).json({ resident });
   } catch (err) {
