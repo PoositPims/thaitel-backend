@@ -11,9 +11,10 @@ const bankAccountRoute = require("./routes/bankAccountRoute");
 const roomNumberRoute = require("./routes/roomNumberRoute");
 const bookingRoute = require("./routes/bookingRoute");
 const AssignRoomRoute = require("./routes/AssignRoomRoute");
+const paymentRoute = require("./routes/paymentRoute");
 
 // const { sequelize } = require("./models");
-// sequelize.sync({ force: false }); // sync แล้วให้ comment เลย
+// sequelize.sync({ force: true }); // sync แล้วให้ comment เลย
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use("/backAccounts", bankAccountRoute);
 app.use("/roomNumbers", roomNumberRoute);
 app.use("/bookings", bookingRoute);
 app.use("/assignRooms", AssignRoomRoute);
+app.use("/payments", paymentRoute);
 
 // เอาไว้ดักเวลาหาไม่เจอ
 app.use((req, res, next) => {

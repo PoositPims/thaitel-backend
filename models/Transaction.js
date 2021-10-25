@@ -6,6 +6,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      // status: {
+      //   type: DataTypes.ENUM("cancle", "pending", "paid"),
+      //   allowNull: false,
+      // },
     },
     {
       underscored: true,

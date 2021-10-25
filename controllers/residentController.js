@@ -58,7 +58,6 @@ exports.createResident = async (req, res, next) => {
       hotelOwnerId,
       services, // [{ serviceId: 1, isFree: true, pricePerTime: 0 }, { serviceId: 2, isFree: false, pricePerTime: 100 }]
       // ให้หน้าบ้านส่งมาแบบนี้ (services).............. !!!!!!!!!!!!!!!!!!!!
-      // facilities //  [1,2.3,4]
     } = req.body;
 
     const dateForCheckIn = new Date(dateCheckIn);
@@ -85,7 +84,7 @@ exports.createResident = async (req, res, next) => {
     // สร้างแบบนี้ [{ serviceId: 1, isFree: true, pricePerTime: 0 }, {}]
     const serviceItemToCreate = services.map((item) => {
       let items = {};
-      items.serviceId = item.serviceId;
+      items.serviceName = item.serviceName;
       items.residentId = resident.id;
       items.isFree = item.isFree;
       items.pricePerTime = item.pricePerTime;
@@ -98,11 +97,7 @@ exports.createResident = async (req, res, next) => {
     //   isFree: true,
     //   pricePerTime: 0,
     // });
-    ServiceItem.bulkCreate(serviceItemToCreate);
-
-    await Service.create({
-      name: "",
-    });
+    await ServiceItem.bulkCreate(serviceItemToCreate);
 
     res.status(201).json({ resident });
   } catch (err) {
