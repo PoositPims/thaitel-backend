@@ -13,7 +13,7 @@ const bookingRoute = require("./routes/bookingRoute");
 const AssignRoomRoute = require("./routes/AssignRoomRoute");
 
 // const { sequelize } = require("./models");
-// sequelize.sync({ force: false }); // sync แล้วให้ comment เลย
+// sequelize.sync({ force: true }); // sync แล้วให้ comment เลย
 
 const app = express();
 
