@@ -52,16 +52,18 @@ exports.createResident = async (req, res, next) => {
       district,
       province,
       postalCode,
-      dateCheckIn,
-      dateCheckOut,
+      timeCheckInStart,
+      timeCheckInEnd,
+      timeCheckOutStart,
+      timeCheckOutEnd,
       canCancle,
       hotelOwnerId,
       services, // [{ serviceId: 1, isFree: true, pricePerTime: 0 }, { serviceId: 2, isFree: false, pricePerTime: 100 }]
       // ให้หน้าบ้านส่งมาแบบนี้ (services).............. !!!!!!!!!!!!!!!!!!!!
     } = req.body;
 
-    const dateForCheckIn = new Date(dateCheckIn);
-    const dateForCheckOut = new Date(dateCheckOut);
+    // const dateForCheckIn = new Date(dateCheckIn);
+    // const dateForCheckOut = new Date(dateCheckOut);
 
     // console.log("dateForCheckIn................", dateForCheckIn);
 
@@ -74,8 +76,12 @@ exports.createResident = async (req, res, next) => {
       district,
       province,
       postalCode,
-      dateCheckIn: dateForCheckIn,
-      dateCheckOut: dateForCheckOut,
+      timeCheckInStart,
+      timeCheckInEnd,
+      timeCheckOutStart,
+      timeCheckOutEnd,
+      // dateCheckIn: dateForCheckIn,
+      // dateCheckOut: dateForCheckOut,
       canCancle,
       hotelOwnerId: req.hotelOwner.id,
       services,
@@ -134,8 +140,10 @@ exports.updateResident = async (req, res, next) => {
       district,
       province,
       postalCode,
-      dateCheckIn,
-      dateCheckOut,
+      timeCheckInStart,
+      timeCheckInEnd,
+      timeCheckOutStart,
+      timeCheckOutEnd,
       canCancle,
       hotelOwnerId,
     } = req.body;
@@ -149,8 +157,10 @@ exports.updateResident = async (req, res, next) => {
         district,
         province,
         postalCode,
-        dateCheckIn,
-        dateCheckOut,
+        timeCheckInStart,
+        timeCheckInEnd,
+        timeCheckOutStart,
+        timeCheckOutEnd,
         canCancle,
       },
       {

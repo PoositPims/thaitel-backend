@@ -27,8 +27,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       status: {
-        type: DataTypes.ENUM("cancle", "pending", "paid"),
+        type: DataTypes.ENUM("error", "pending", "success"),
         allowNull: false,
+      },
+      chillpayTransaction: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
     },
     {
@@ -45,15 +49,6 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: "RESTRICT",
     });
     Booking.hasMany(models.BookingItem, {
-      foreignKey: {
-        name: "bookingId",
-        allowNull: false,
-      },
-      onDelete: "RESTRICT",
-      onUpdate: "RESTRICT",
-    });
-    Booking.hasOne(models.Transaction, {
-      // check อีกทีว่าจะเอา chillpay หริอ omise
       foreignKey: {
         name: "bookingId",
         allowNull: false,

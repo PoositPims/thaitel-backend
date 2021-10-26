@@ -14,7 +14,7 @@ const AssignRoomRoute = require("./routes/AssignRoomRoute");
 const paymentRoute = require("./routes/paymentRoute");
 
 // const { sequelize } = require("./models");
-// sequelize.sync({ force: true }); // sync แล้วให้ comment เลย
+// sequelize.sync({ force: false }); // sync แล้วให้ comment เลย
 
 const app = express();
 

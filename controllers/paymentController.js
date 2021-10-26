@@ -1,7 +1,9 @@
+// // เอา booking id มาแทน order และ cartid ใน line 33 (old project)
+
 const axios = require("axios");
 const CryptoJs = require("crypto-js");
 // const { Order, Cart } = require("../models");
-const { Booking, BookingItem, Transaction, respCode } = require("../models");
+const { Booking, BookingItem } = require("../models");
 
 const chillpayUrl = "https://sandbox-appsrv2.chillpay.co/api/v2/Payment/";
 const merchantCode = "M032803";
@@ -23,7 +25,7 @@ exports.createPaymentReq = async (req, res, next) => {
       totalPrice,
       serviceFee,
       rooms,
-      // respCode,
+      respCode,
       // status,
     } = req.body;
 
@@ -32,13 +34,11 @@ exports.createPaymentReq = async (req, res, next) => {
     // update order status
     let status;
     if (respCode === 3) {
-      await Booking.update({ status: "error" });
-    } else if (respCode === 2) {
-      await Booking.update({ status: "cancle" });
-    } else if (respCode === 1) {
-      await Booking.update({ status: "fail" });
+      status = "error";
+    } else if (respCode === 9) {
+      status = "pending";
     } else {
-      await Booking.update({ status: "success" });
+      status = "success";
     }
 
     const booking = await Booking.create({
@@ -49,7 +49,7 @@ exports.createPaymentReq = async (req, res, next) => {
       status,
       userId,
     });
-
+    console.log("respCode.....................", respCode);
     // rooms :[{roomId:1, roomBookingAmount:1},{roomId:2, roomBookingAmount:2}]
     const bookingItems = rooms.map((item) => {
       return {
@@ -75,6 +75,14 @@ exports.createPaymentReq = async (req, res, next) => {
     const IPAddress =
       req.headers["x-forwarded-for"] || req.socket.remoteAddress;
 
+    // const transaction = await Transaction.create({
+    //   bookingId: req.bookingId,
+    //   status: "pending",
+    //   transactionId: TransactionId.toString(),
+    //   // cartId,.user.id,
+    // });
+
+    // const orderNo = booking.id;
     const orderNo = booking.id;
     const amount = booking.totalPrice * 100 + booking.serviceFee * 100;
     const phoneNumber = "081111111";
@@ -118,6 +126,13 @@ exports.createPaymentReq = async (req, res, next) => {
       }
     );
     const { TransactionId } = data;
+    // await booking.update({ transactionId: TransactionId.toString() });
+    // const transaction = await Transaction.create({
+    //   bookingId: req.bookingId,
+    //   status: "pending",
+    //   transactionId: TransactionId.toString(),
+    //   // cartId,.user.id,
+    // });
     await booking.update({ transactionId: TransactionId.toString() });
     res.status(201).json({ ChillpayData: data });
     console.log("data.................................", data);
@@ -129,23 +144,40 @@ exports.createPaymentReq = async (req, res, next) => {
 exports.paymentResult = async (req, res, next) => {
   try {
     const { status, transNo, respCode } = req.body;
-    const booking = await Booking.findOne({
+    // const booking = await Booking.findOne({
+    //   where: {
+    //     id: id,
+    //     // transactionId: transNo.toString(),
+    //   },
+    // });
+    const transaction = await Transaction.findOne({
       where: {
-        id: id,
-        // transactionId: transNo.toString(),
+        transactionId: transNo.toString(),
       },
     });
-    if (!booking) {
-      throw new Error("no booking");
+    // if (!booking) {
+    //   throw new Error("no booking");
+    // }
+    if (!transaction) {
+      throw new Error("no transaction");
     }
-    booking.status = "paid";
-    await booking.save();
+
+    // booking.status = "paid";
+    // await booking.save();
 
     // update order status
     if (respCode > 0) {
-      await Booking.update({ status: "cancle" });
+      await transaction.update({ status: "cancle" });
     } else {
-      await Booking.update({ status: "success" });
+      await transaction.update({ status: "success" });
+
+      const booking = await Booking.findByPk(order.cartId);
+      if (!booking) {
+        throw new Error("no booking");
+      }
+      booking.status = "paid";
+      await booking.save();
+
       // update user's current cart => is_paid = true, create new cart
 
       // const cart = await Cart.findByPk(order.cartId);
@@ -162,11 +194,11 @@ exports.paymentResult = async (req, res, next) => {
   res.redirect(redirectPath);
 };
 
-// const idx = cartItems.findIndex((x) => x.id === product.id);
-//     const newCart = [...cartItems];
-//     if (idx > -1) {
-//       newCart[idx] = { ...newCart[idx], qty: newCart[idx].qty + 1 };
-//     } else {
-//       newCart.push({ ...product, qty: 1 });
-//     }
-//     setCartItems(newCart);
+// // const idx = cartItems.findIndex((x) => x.id === product.id);
+// //     const newCart = [...cartItems];
+// //     if (idx > -1) {
+// //       newCart[idx] = { ...newCart[idx], qty: newCart[idx].qty + 1 };
+// //     } else {
+// //       newCart.push({ ...product, qty: 1 });
+// //     }
+// //     setCartItems(newCart);

@@ -34,12 +34,20 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      dateCheckIn: {
-        type: DataTypes.DATEONLY,
+      timeCheckInStart: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
-      dateCheckOut: {
-        type: DataTypes.DATEONLY,
+      timeCheckInEnd: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      timeCheckOutStart: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      timeCheckOutEnd: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
       canCancle: {
