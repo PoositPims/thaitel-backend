@@ -73,6 +73,14 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: "RESTRICT",
       onUpdate: "RESTRICT",
     });
+    Room.hasMany(models.BookedDaily, {
+      ForeignKey: {
+        name: "roomId",
+        allowNull: false,
+      },
+      onDelete: "RESTRICT",
+      onUpdate: "RESTRICT",
+    });
   };
   return Room;
 };
