@@ -52,17 +52,18 @@ exports.createResident = async (req, res, next) => {
       district,
       province,
       postalCode,
-      dateCheckIn,
-      dateCheckOut,
+      timeCheckInStart,
+      timeCheckInEnd,
+      timeCheckOutStart,
+      timeCheckOutEnd,
       canCancle,
       hotelOwnerId,
       services, // [{ serviceId: 1, isFree: true, pricePerTime: 0 }, { serviceId: 2, isFree: false, pricePerTime: 100 }]
       // ให้หน้าบ้านส่งมาแบบนี้ (services).............. !!!!!!!!!!!!!!!!!!!!
-      // facilities //  [1,2.3,4]
     } = req.body;
 
-    const dateForCheckIn = new Date(dateCheckIn);
-    const dateForCheckOut = new Date(dateCheckOut);
+    // const dateForCheckIn = new Date(dateCheckIn);
+    // const dateForCheckOut = new Date(dateCheckOut);
 
     // console.log("dateForCheckIn................", dateForCheckIn);
 
@@ -75,8 +76,12 @@ exports.createResident = async (req, res, next) => {
       district,
       province,
       postalCode,
-      dateCheckIn: dateForCheckIn,
-      dateCheckOut: dateForCheckOut,
+      timeCheckInStart,
+      timeCheckInEnd,
+      timeCheckOutStart,
+      timeCheckOutEnd,
+      // dateCheckIn: dateForCheckIn,
+      // dateCheckOut: dateForCheckOut,
       canCancle,
       hotelOwnerId: req.hotelOwner.id,
       services,
@@ -85,7 +90,7 @@ exports.createResident = async (req, res, next) => {
     // สร้างแบบนี้ [{ serviceId: 1, isFree: true, pricePerTime: 0 }, {}]
     const serviceItemToCreate = services.map((item) => {
       let items = {};
-      items.serviceId = item.serviceId;
+      items.serviceName = item.serviceName;
       items.residentId = resident.id;
       items.isFree = item.isFree;
       items.pricePerTime = item.pricePerTime;
@@ -98,11 +103,7 @@ exports.createResident = async (req, res, next) => {
     //   isFree: true,
     //   pricePerTime: 0,
     // });
-    ServiceItem.bulkCreate(serviceItemToCreate);
-
-    await Service.create({
-      name: "",
-    });
+    await ServiceItem.bulkCreate(serviceItemToCreate);
 
     res.status(201).json({ resident });
   } catch (err) {
@@ -139,8 +140,10 @@ exports.updateResident = async (req, res, next) => {
       district,
       province,
       postalCode,
-      dateCheckIn,
-      dateCheckOut,
+      timeCheckInStart,
+      timeCheckInEnd,
+      timeCheckOutStart,
+      timeCheckOutEnd,
       canCancle,
       hotelOwnerId,
     } = req.body;
@@ -154,8 +157,10 @@ exports.updateResident = async (req, res, next) => {
         district,
         province,
         postalCode,
-        dateCheckIn,
-        dateCheckOut,
+        timeCheckInStart,
+        timeCheckInEnd,
+        timeCheckOutStart,
+        timeCheckOutEnd,
         canCancle,
       },
       {

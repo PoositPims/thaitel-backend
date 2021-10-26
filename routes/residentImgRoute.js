@@ -9,7 +9,7 @@ router.get("/:id", authenticate, residentImgConteoller.getResidentImgById);
 router.delete("/:id", authenticate, residentImgConteoller.deleteResidentImg);
 router.post(
   "/",
-  upload.array("cloudInput"),
+  upload.single("cloudInput"),
   authenticate,
   residentImgConteoller.createResidentImg
 );
