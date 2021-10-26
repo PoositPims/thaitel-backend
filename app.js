@@ -12,10 +12,11 @@ const roomNumberRoute = require("./routes/roomNumberRoute");
 const bookingRoute = require("./routes/bookingRoute");
 const AssignRoomRoute = require("./routes/AssignRoomRoute");
 const paymentRoute = require("./routes/paymentRoute");
+const searchRoute = require("./routes/searchRoute");
 
-// const { sequelize } = require("./models");
-// sequelize.sync({ force: true }); // sync แล้วให้ comment เลย
-
+const { sequelize } = require("./models");
+// sequelize.sync({ force: false }); // sync แล้วให้ comment เลย
+// sequelize.sync({ alter: true }); //แก้ไขโครงสร้างข้อมูล
 const app = express();
 
 app.use(cors());
@@ -33,7 +34,7 @@ app.use("/roomNumbers", roomNumberRoute);
 app.use("/bookings", bookingRoute);
 app.use("/assignRooms", AssignRoomRoute);
 app.use("/payments", paymentRoute);
-
+app.use("/search",searchRoute);
 // เอาไว้ดักเวลาหาไม่เจอ
 app.use((req, res, next) => {
   res.status(404).json({ messahe: "this resource is not found" });
