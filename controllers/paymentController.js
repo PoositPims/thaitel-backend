@@ -26,30 +26,30 @@ exports.createPaymentReq = async (req, res, next) => {
       serviceFee,
       rooms,
       respCode,
-      // status,
+      status,
     } = req.body;
 
     // console.log("respCode......................", respCode);
 
-    // update order status
-    let status;
-    if (respCode === 3) {
-      status = "error";
-    } else if (respCode === 9) {
-      status = "pending";
-    } else {
-      status = "success";
-    }
+    // // update order status
+    // let status;
+    // if (respCode === 3) {
+    //   status = "error";
+    // } else if (respCode === 9) {
+    //   status = "pending";
+    // } else {
+    //   status = "success";
+    // }
 
     const booking = await Booking.create({
       checkInDate,
       checkOutDate,
       totalPrice,
       serviceFee,
-      status,
+      status: "pending",
       userId,
     });
-    console.log("respCode.....................", respCode);
+    // console.log("respCode.....................", respCode);
     // rooms :[{roomId:1, roomBookingAmount:1},{roomId:2, roomBookingAmount:2}]
     const bookingItems = rooms.map((item) => {
       return {
@@ -133,7 +133,7 @@ exports.createPaymentReq = async (req, res, next) => {
     //   transactionId: TransactionId.toString(),
     //   // cartId,.user.id,
     // });
-    await booking.update({ transactionId: TransactionId.toString() });
+    await booking.update({ chillpayTransaction: TransactionId.toString() });
     res.status(201).json({ ChillpayData: data });
     console.log("data.................................", data);
   } catch (err) {
@@ -150,47 +150,33 @@ exports.paymentResult = async (req, res, next) => {
     //     // transactionId: transNo.toString(),
     //   },
     // });
-    const transaction = await Transaction.findOne({
+    // console.log(object)
+    console.log("transNo....................................", transNo);
+    console.log("respCode....................................", respCode);
+    const booking = await Booking.findOne({
       where: {
-        transactionId: transNo.toString(),
+        // transactionId: transNo.toString(),
+        chillpayTransaction: transNo.toString(),
       },
     });
-    // if (!booking) {
-    //   throw new Error("no booking");
-    // }
-    if (!transaction) {
-      throw new Error("no transaction");
-    }
 
-    // booking.status = "paid";
-    // await booking.save();
-
-    // update order status
+    // // update order status
     if (respCode > 0) {
-      await transaction.update({ status: "cancle" });
+      await booking.update({ status: "cancle" });
     } else {
-      await transaction.update({ status: "success" });
+      await booking.update({ status: "success" });
 
-      const booking = await Booking.findByPk(order.cartId);
+      // const booking = await Booking.findByPk(data.OrderNo + "");
       if (!booking) {
         throw new Error("no booking");
       }
-      booking.status = "paid";
+      // booking.chillpayTransaction = TransactionId;
+      booking.status = "success";
       await booking.save();
-
-      // update user's current cart => is_paid = true, create new cart
-
-      // const cart = await Cart.findByPk(order.cartId);
-      // if (!cart) {
-      //   throw new Error("no cart");
-      // }
-      // cart.isPaid = true;
-      // await cart.save();
     }
   } catch (err) {
     next(err);
   }
-  // redirect
   res.redirect(redirectPath);
 };
 

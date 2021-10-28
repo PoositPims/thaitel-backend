@@ -3,6 +3,7 @@ const {
   Room,
   ResidentImg,
   ServiceItem,
+  Rooms,
   Service,
 } = require("../models");
 
@@ -10,10 +11,19 @@ const {
 exports.getAllResident = async (req, res, next) => {
   try {
     const resident = await Resident.findAll({
-      include: ResidentImg,
+      include: [
+        {
+          model: ResidentImg,
+        },
+        {
+          model: Room,
+        },
+      ],
+
+      // include: ResidentImg,
     });
-    // console.log("resident...............", resident);
     res.json({ resident });
+    // console.log("resident...............", JSON.stringify(resident, null, 2));
   } catch (err) {
     next(err);
   }
@@ -27,14 +37,19 @@ exports.getById = async (req, res, next) => {
       where: {
         id: id,
       },
-      // include: [
-      //   {
-      //     model: Room,
-      //   },
-      // ],
+      include: [
+        {
+          model: ResidentImg,
+        },
+        {
+          model: Room,
+        },
+      ],
     });
     // console.log("id........................", id);
     res.json({ resident });
+    // console.log(JSON.stringify(tasks, null, 2));
+    // console.log("resident...............", JSON.stringify(resident, null, 2));
   } catch (err) {
     next(err);
   }

@@ -4,7 +4,14 @@ module.exports = (sequelize, DataTypes) => {
     "BankAccount",
     {
       bankName: {
-        type: DataTypes.STRING,
+        // type: DataTypes.STRING,
+        type: DataTypes.ENUM(
+          "Bank of Ayudhya",
+          "Kasikorn bank",
+          "Krungthai bank",
+          "Siam Commercial Bank",
+          "Aomsin bank"
+        ),
         allowNull: false,
       },
       AccountNumber: {
