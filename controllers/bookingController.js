@@ -4,6 +4,7 @@ const {
   Room,
   Resident,
   ServiceItem,
+  ResidentImg,
 } = require("../models");
 
 // get all
@@ -16,13 +17,85 @@ exports.getAllBooking = async (req, res, next) => {
   }
 };
 
-// get by id
-exports.getBookingId = async (req, res, next) => {
+// get all by user id
+exports.getByUserId = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const booking = await Booking.findOne({
-      where: { id },
+    const result = await Booking.findAll({
+      attributes: [
+        "serviceFee",
+        "totalPrice",
+        "checkInDate",
+        "checkOutDate",
+        "id",
+        "status",
+      ],
+      where: {
+        userId: req.user.id,
+        status: "success",
+      },
+      include: [
+        {
+          model: BookingItem,
+          attributes: ["roomBookingAmount"],
+          include: {
+            model: Room,
+            attributes: ["typeOf", "roomDetail", "pricePerNight"],
+            include: {
+              model: Resident,
+              include: { model: ResidentImg, attributes: ["imgUrl"] },
+              attributes: [
+                "name",
+                "timeCheckInStart",
+                "timeCheckInEnd",
+                "timeCheckOutStart",
+                "timeCheckOutEnd",
+              ],
+            },
+          },
+        },
+      ],
     });
+
+    const resultParse = JSON.parse(JSON.stringify(result));
+
+    const booking = resultParse.map((item) => {
+      let resident = {};
+      const {
+        id,
+        serviceFee,
+        totalPrice,
+        checkInDate,
+        checkOutDate,
+        BookingItems,
+      } = item;
+      const rooms = BookingItems.map((room) => {
+        const {
+          roomBookingAmount,
+          Room: { typeOf, roomDetail, Resident },
+        } = room;
+        const clone = { ...Resident };
+        delete clone.ResidentImgs;
+        resident = { ...clone, imgUrl: Resident.ResidentImgs[0].imgUrl };
+        return { roomBookingAmount, typeOf, roomDetail };
+      });
+      return {
+        id,
+        serviceFee,
+        totalPrice,
+        checkInDate,
+        checkOutDate,
+        rooms,
+        resident,
+      };
+    });
+
+    // console.log("req.user...............", req.user.id);
+    // const rooms = await Room.findAll({
+    //   where: {
+    //     residentId: id,
+    //   },
+    // });
+
     res.json({ booking });
   } catch (err) {
     next(err);

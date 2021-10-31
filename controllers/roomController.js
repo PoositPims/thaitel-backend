@@ -1,4 +1,20 @@
 const { Room, Resident } = require("../models");
+const multer = require("multer");
+const cloudinary = require("cloudinary").v2;
+const util = require("util"); // แปลง callback ให้เป็น promise
+const fs = require("fs");
+const uploadPromise = util.promisify(cloudinary.uploader.upload);
+
+exports.upload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, "public/images");
+    },
+    filename: (req, file, cb) => {
+      cb(null, `${Date.now()}.${file.mimetype.split("/")[1]}`);
+    },
+  }),
+});
 
 // get all
 exports.getAllRoom = async (req, res, next) => {
@@ -43,6 +59,7 @@ exports.createRoom = async (req, res, next) => {
       maxGuest,
       residentId,
     } = req.body;
+    const result = await uploadPromise(req.file.path);
 
     const resident = await Resident.findOne({
       where: { id: residentId, hotelOwnerId: req.hotelOwner.id },
@@ -60,10 +77,11 @@ exports.createRoom = async (req, res, next) => {
       noSmoking,
       petAllowed,
       pricePerNight,
-      imgURL,
+      imgURL: result.secure_url,
       maxGuest,
       residentId,
     });
+    fs.unlinkSync(req.file.path);
     res.status(201).json({ room });
   } catch (err) {
     next(err);

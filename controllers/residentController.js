@@ -22,6 +22,11 @@ exports.getAllResident = async (req, res, next) => {
 
       // include: ResidentImg,
     });
+    // const rooms = await Room.findAll({
+    //   where: {
+    //     residentId: id,
+    //   },
+    // });
     res.json({ resident });
     // console.log("resident...............", JSON.stringify(resident, null, 2));
   } catch (err) {
@@ -42,12 +47,18 @@ exports.getById = async (req, res, next) => {
           model: ResidentImg,
         },
         {
-          model: Room,
+          model: ServiceItem,
         },
       ],
     });
+
+    const rooms = await Room.findAll({
+      where: {
+        residentId: id,
+      },
+    });
     // console.log("id........................", id);
-    res.json({ resident });
+    res.json({ resident, rooms });
     // console.log(JSON.stringify(tasks, null, 2));
     // console.log("resident...............", JSON.stringify(resident, null, 2));
   } catch (err) {
@@ -76,7 +87,6 @@ exports.createResident = async (req, res, next) => {
       services, // [{ serviceId: 1, isFree: true, pricePerTime: 0 }, { serviceId: 2, isFree: false, pricePerTime: 100 }]
       // ให้หน้าบ้านส่งมาแบบนี้ (services).............. !!!!!!!!!!!!!!!!!!!!
     } = req.body;
-
     // const dateForCheckIn = new Date(dateCheckIn);
     // const dateForCheckOut = new Date(dateCheckOut);
 
