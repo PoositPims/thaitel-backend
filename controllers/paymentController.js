@@ -25,8 +25,8 @@ exports.createPaymentReq = async (req, res, next) => {
       totalPrice,
       serviceFee,
       rooms,
-      respCode,
-      status,
+      // respCode,
+      // status,
     } = req.body;
 
     // console.log("respCode......................", respCode);

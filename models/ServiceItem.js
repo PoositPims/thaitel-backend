@@ -20,6 +20,10 @@ module.exports = (Sequelize, DataTypes) => {
         type: DataTypes.BOOLEAN,
         allowNull: false,
       },
+      isHaving: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      },
       pricePerTime: {
         type: DataTypes.INTEGER,
         allowNull: false,

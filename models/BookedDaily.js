@@ -6,12 +6,17 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      BookedRoom: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
       Date: {
         type: DataTypes.DATEONLY,
         allowNull: false,
       },
     },
     {
+      tableName: "booked_dailies",
       underscored: true,
     }
   );

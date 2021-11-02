@@ -3,6 +3,7 @@ const {
   Room,
   ResidentImg,
   ServiceItem,
+  BookingItem,
   Rooms,
   Service,
 } = require("../models");
@@ -22,6 +23,11 @@ exports.getAllResident = async (req, res, next) => {
 
       // include: ResidentImg,
     });
+    // const rooms = await Room.findAll({
+    //   where: {
+    //     residentId: id,
+    //   },
+    // });
     res.json({ resident });
     // console.log("resident...............", JSON.stringify(resident, null, 2));
   } catch (err) {
@@ -35,21 +41,150 @@ exports.getById = async (req, res, next) => {
     const { id } = req.params;
     const resident = await Resident.findOne({
       where: {
-        id: id,
+        id,
       },
       include: [
         {
           model: ResidentImg,
         },
         {
+          model: ServiceItem,
+        },
+        {
           model: Room,
         },
       ],
     });
+
+    const rooms = await Room.findAll({
+      where: {
+        residentId: id,
+      },
+    });
     // console.log("id........................", id);
-    res.json({ resident });
+    res.json({ resident, rooms });
     // console.log(JSON.stringify(tasks, null, 2));
     // console.log("resident...............", JSON.stringify(resident, null, 2));
+  } catch (err) {
+    next(err);
+  }
+};
+
+// getAllResByOwner
+exports.getAllResByOwner = async (req, res, next) => {
+  try {
+    // console.log("test................");
+    // console.log("req.hotelOwner...............", req.hotelOwner);
+    const resident = await Resident.findAll({
+      attributes: [
+        "id",
+        "typeOf",
+        "name",
+        "timeCheckInStart",
+        "timeCheckInEnd",
+        "timeCheckOutStart",
+        "timeCheckOutEnd",
+        "province",
+        "description",
+      ],
+      where: {
+        hotelOwnerId: req.hotelOwner.id,
+      },
+      include: [
+        {
+          model: ResidentImg,
+          attributes: ["imgUrl"],
+        },
+        {
+          model: ServiceItem,
+          attributes: ["serviceName", "pricePerTime"],
+        },
+        {
+          model: Room,
+          attributes: [
+            "typeOf",
+            // "roomDetail",
+            "pricePerNight",
+            "imgURL",
+            "id",
+            "roomAmount",
+          ],
+          include: {
+            model: BookingItem,
+            attributes: ["roomBookingAmount"],
+          },
+        },
+      ],
+    });
+
+    // const bookedRoomCount = BookingItem.map((item) => {});
+
+    const resultParse = JSON.parse(JSON.stringify(resident));
+
+    // console.log("resultParse...............", resultParse);
+
+    const resultResident = resultParse.map((item) => {
+      const {
+        id,
+        typeOf,
+        name,
+        timeCheckInStart,
+        timeCheckInEnd,
+        timeCheckOutStart,
+        timeCheckOutEnd,
+        province,
+        description,
+        ResidentImgs,
+        Rooms,
+        ServiceItems,
+      } = item;
+      //   // const imgUrl = Resident.ResidentImgs[0].imgUrl;
+      const rooms = Rooms.map((room) => {
+        const {
+          id,
+          typeOf,
+          // roomDetail,
+          pricePerNight,
+          imgURL,
+          BookingItems,
+          roomAmount,
+        } = room;
+        const countBookedRoom = BookingItems.reduce(
+          (a, c) => a + c.roomBookingAmount,
+          0
+        );
+        return {
+          id,
+          typeOf,
+          // roomDetail,
+          pricePerNight,
+          imgURL,
+          countBookedRoom,
+          roomAmount,
+        };
+      });
+      return {
+        id,
+        typeOf,
+        name,
+        timeCheckInStart,
+        timeCheckInEnd,
+        timeCheckOutStart,
+        timeCheckOutEnd,
+        province,
+        description,
+        rooms,
+        ServiceItems,
+        // imgUrl: ResidentImgs[0].imgUrl,
+        imgUrl: ResidentImgs[0]?.imgUrl || null,
+      };
+    });
+
+    // console.log("resultResident........................", resultResident);
+    res.json({
+      // resident,
+      resultResident,
+    });
   } catch (err) {
     next(err);
   }
@@ -76,7 +211,6 @@ exports.createResident = async (req, res, next) => {
       services, // [{ serviceId: 1, isFree: true, pricePerTime: 0 }, { serviceId: 2, isFree: false, pricePerTime: 100 }]
       // ให้หน้าบ้านส่งมาแบบนี้ (services).............. !!!!!!!!!!!!!!!!!!!!
     } = req.body;
-
     // const dateForCheckIn = new Date(dateCheckIn);
     // const dateForCheckOut = new Date(dateCheckOut);
 
@@ -130,6 +264,7 @@ exports.createResident = async (req, res, next) => {
 // delete (ลบโรงแรมได้ดีมั้ย..............................???)
 exports.deleteResident = async (req, res, next) => {
   try {
+    console.log("test....................");
     const { id } = req.params;
     const rows = await Resident.destroy({
       where: { id },

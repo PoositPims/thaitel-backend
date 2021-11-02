@@ -1,7 +1,20 @@
 const { Room, Resident } = require("../models");
+const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
 const util = require("util"); // แปลง callback ให้เป็น promise
+const fs = require("fs");
 const uploadPromise = util.promisify(cloudinary.uploader.upload);
+
+exports.upload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, "public/images");
+    },
+    filename: (req, file, cb) => {
+      cb(null, `${Date.now()}.${file.mimetype.split("/")[1]}`);
+    },
+  }),
+});
 
 // get all
 exports.getAllRoom = async (req, res, next) => {
@@ -30,12 +43,21 @@ exports.getRoomById = async (req, res, next) => {
 };
 
 // create
+// ให้หน้าบ้านรับมาแบบ array
+exports.createManyRoom = async (req, res, next) => {
+  try {
+    const { roomCollection, residentId } = req.body;
+  } catch (err) {
+    next(err);
+  }
+};
+
 // ถามพี่แพรอีกที เกี่ยวกับ room ว่าส่งข้อมูลหลายหน้าได้ไหม
 exports.createRoom = async (req, res, next) => {
   try {
     const {
       typeOf,
-      roomDetail,
+      // roomDetail,
       roomAmount,
       size,
       optionalRoomDetail,
@@ -45,7 +67,6 @@ exports.createRoom = async (req, res, next) => {
       maxGuest,
       residentId,
     } = req.body;
-
     const result = await uploadPromise(req.file.path);
 
     const resident = await Resident.findOne({
@@ -57,17 +78,19 @@ exports.createRoom = async (req, res, next) => {
         .json({ message: "This resident is not own by this hotel owner" });
     const room = await Room.create({
       typeOf,
-      roomDetail,
+      // roomDetail,
       roomAmount,
       size,
       optionalRoomDetail,
       noSmoking,
       petAllowed,
       pricePerNight,
-      imgURL:result.secure_url,
+      imgURL: result.secure_url,
+      // imgURL:result.secure_url,
       maxGuest,
       residentId,
     });
+    fs.unlinkSync(req.file.path);
     res.status(201).json({ room });
   } catch (err) {
     next(err);
@@ -80,7 +103,7 @@ exports.updateRoom = async (req, res, next) => {
     const { id } = req.params;
     const {
       typeOf,
-      roomDetail,
+      // roomDetail,
       roomAmount,
       size,
       optionalRoomDetail,
@@ -94,7 +117,7 @@ exports.updateRoom = async (req, res, next) => {
     const [rows] = await Room.update(
       {
         typeOf,
-        roomDetail,
+        // roomDetail,
         roomAmount,
         size,
         optionalRoomDetail,

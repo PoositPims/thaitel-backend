@@ -35,6 +35,11 @@ module.exports = (sequelize, DataTypes) => {
         // allowNull: false,
         allowNull: true,
       },
+      role: {
+        type: DataTypes.STRING,
+        defaultValue: "OWNER",
+        allowNull: true,
+      },
     },
     {
       underscored: true,
