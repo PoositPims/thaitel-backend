@@ -64,7 +64,6 @@ exports.createRoom = async (req, res, next) => {
       noSmoking,
       petAllowed,
       pricePerNight,
-      imgURL,
       maxGuest,
       residentId,
     } = req.body;
@@ -87,6 +86,7 @@ exports.createRoom = async (req, res, next) => {
       petAllowed,
       pricePerNight,
       imgURL: result.secure_url,
+      // imgURL:result.secure_url,
       maxGuest,
       residentId,
     });
