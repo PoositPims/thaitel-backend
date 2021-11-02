@@ -1,6 +1,19 @@
 const { User } = require("../models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const nodemailer = require("nodemailer");
+
+// let transporter = nodemailer.createTransport(transport[, defaults])
+
+nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true, // upgrade later with STARTTLS
+  auth: {
+    user: "username",
+    pass: "password",
+  },
+});
 
 exports.authenticate = async (req, res, next) => {
   try {

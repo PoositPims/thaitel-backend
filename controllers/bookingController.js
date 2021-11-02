@@ -5,6 +5,7 @@ const {
   Resident,
   ServiceItem,
   ResidentImg,
+  Sequelize,
 } = require("../models");
 
 // get all
@@ -20,6 +21,17 @@ exports.getAllBooking = async (req, res, next) => {
 // get all by user id
 exports.getByUserId = async (req, res, next) => {
   try {
+    // const count = await BookingItem.findAll({
+    //   attributes: [
+    //     "roomId",
+    //     [
+    //       Sequelize.fn("SUM", Sequelize.col("room_booking_amount")),
+    //       "bookedRoom",
+    //     ],
+    //   ],
+    //   group: ["roomId"],
+    // });
+
     const result = await Booking.findAll({
       attributes: [
         "serviceFee",

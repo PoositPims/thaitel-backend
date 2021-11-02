@@ -43,6 +43,15 @@ exports.getRoomById = async (req, res, next) => {
 };
 
 // create
+// ให้หน้าบ้านรับมาแบบ array
+exports.createManyRoom = async (req, res, next) => {
+  try {
+    const { roomCollection, residentId } = req.body;
+  } catch (err) {
+    next(err);
+  }
+};
+
 // ถามพี่แพรอีกที เกี่ยวกับ room ว่าส่งข้อมูลหลายหน้าได้ไหม
 exports.createRoom = async (req, res, next) => {
   try {
