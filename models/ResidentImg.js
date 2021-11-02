@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const ResidentImg = sequelize.define(
     "ResidentImg",
     {
-      ImgUrl: {
+      imgUrl: {
         type: DataTypes.TEXT,
         allowNull: false,
       },
@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   ResidentImg.associate = (models) => {
     ResidentImg.belongsTo(models.Resident, {
-      ForeignKey: {
+      foreingeKey: {
         name: "residentId",
         allowNull: false,
       },

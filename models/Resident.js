@@ -34,17 +34,33 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      timeCheckIn: {
-        type: DataTypes.DATEONLY,
+      timeCheckInStart: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
-      timeCheckOut: {
-        type: DataTypes.DATEONLY,
+      timeCheckInEnd: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
-      cancleDate: {
+      timeCheckOutStart: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      timeCheckOutEnd: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      canCancle: {
         type: DataTypes.BOOLEAN,
-        // คืนเงินไม่คืนเงิน
+        allowNull: true,
+      },
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      imgURL: {
+        type: DataTypes.TEXT,
+        // allowNull: false,
         allowNull: true,
       },
     },

@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      OptionalRoomDetail: {
+      optionalRoomDetail: {
         type: DataTypes.STRING,
         allowNull: true,
       },
@@ -36,7 +36,8 @@ module.exports = (sequelize, DataTypes) => {
       },
       imgURL: {
         type: DataTypes.TEXT,
-        allowNull: false,
+        // allowNull: false,
+        allowNull: true,
       },
       maxGuest: {
         type: DataTypes.INTEGER,
@@ -65,6 +66,14 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: "RESTRICT",
     });
     Room.hasMany(models.BookingItem, {
+      ForeignKey: {
+        name: "roomId",
+        allowNull: false,
+      },
+      onDelete: "RESTRICT",
+      onUpdate: "RESTRICT",
+    });
+    Room.hasMany(models.BookedDaily, {
       ForeignKey: {
         name: "roomId",
         allowNull: false,
