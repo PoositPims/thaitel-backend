@@ -56,8 +56,7 @@ exports.getAllData = async (req, res, next) => {
           });
           if (filter.length > 0) {
             return false;
-          }
-          else return true
+          } else return true;
           console.log("33");
           console.log(JSON.stringify(filter, null, 2));
         } else {
@@ -70,7 +69,7 @@ exports.getAllData = async (req, res, next) => {
         }
       }
     });
-    console.log('7272')
+    console.log("7272");
     console.log(JSON.stringify(avail, null, 2));
 
     res.json({ residents });

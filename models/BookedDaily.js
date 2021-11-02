@@ -1,22 +1,26 @@
 module.exports = (sequelize, DataTypes) => {
-  const BookedDailay = sequelize.define("BookedDaily", {
-    roomRemaining: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    BookedRoom: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    Date:{
-      type:DataTypes.DATEONLY,
-      allowNull: false,
-    }},
+  const BookedDailay = sequelize.define(
+    "BookedDaily",
     {
-      underscored: true
+      roomRemaining: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      BookedRoom: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      Date: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+      },
+    },
+    {
+      tableName: "booked_dailies",
+      underscored: true,
     }
   );
-  
+
   BookedDailay.associate = (models) => {
     BookedDailay.belongsTo(models.Room),
       {

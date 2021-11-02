@@ -51,7 +51,11 @@ exports.getByUserId = async (req, res, next) => {
           attributes: ["roomBookingAmount"],
           include: {
             model: Room,
-            attributes: ["typeOf", "roomDetail", "pricePerNight"],
+            attributes: [
+              "typeOf",
+              // "roomDetail"
+              "pricePerNight",
+            ],
             include: {
               model: Resident,
               include: { model: ResidentImg, attributes: ["imgUrl"] },
@@ -83,12 +87,20 @@ exports.getByUserId = async (req, res, next) => {
       const rooms = BookingItems.map((room) => {
         const {
           roomBookingAmount,
-          Room: { typeOf, roomDetail, Resident },
+          Room: {
+            typeOf,
+            // , roomDetail
+            Resident,
+          },
         } = room;
         const clone = { ...Resident };
         delete clone.ResidentImgs;
         resident = { ...clone, imgUrl: Resident.ResidentImgs[0].imgUrl };
-        return { roomBookingAmount, typeOf, roomDetail };
+        return {
+          roomBookingAmount,
+          typeOf,
+          // , roomDetail
+        };
       });
       return {
         id,

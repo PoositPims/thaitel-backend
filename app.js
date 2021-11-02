@@ -34,7 +34,7 @@ app.use("/roomNumbers", roomNumberRoute);
 app.use("/bookings", bookingRoute);
 app.use("/assignRooms", AssignRoomRoute);
 app.use("/payments", paymentRoute);
-app.use("/search",searchRoute);
+app.use("/search", searchRoute);
 // เอาไว้ดักเวลาหาไม่เจอ
 app.use((req, res, next) => {
   res.status(404).json({ messahe: "this resource is not found" });
@@ -42,6 +42,7 @@ app.use((req, res, next) => {
 
 // handle error
 app.use((err, req, res, next) => {
+  console.log(JSON.stringify(err, null, 2));
   console.log(err);
   res.status(500).json({ message: err.message });
 });

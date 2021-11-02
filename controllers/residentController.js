@@ -103,7 +103,7 @@ exports.getAllResByOwner = async (req, res, next) => {
           model: Room,
           attributes: [
             "typeOf",
-            "roomDetail",
+            // "roomDetail",
             "pricePerNight",
             "imgURL",
             "id",
@@ -139,12 +139,11 @@ exports.getAllResByOwner = async (req, res, next) => {
         ServiceItems,
       } = item;
       //   // const imgUrl = Resident.ResidentImgs[0].imgUrl;
-
       const rooms = Rooms.map((room) => {
         const {
           id,
           typeOf,
-          roomDetail,
+          // roomDetail,
           pricePerNight,
           imgURL,
           BookingItems,
@@ -157,7 +156,7 @@ exports.getAllResByOwner = async (req, res, next) => {
         return {
           id,
           typeOf,
-          roomDetail,
+          // roomDetail,
           pricePerNight,
           imgURL,
           countBookedRoom,

@@ -57,7 +57,7 @@ exports.createRoom = async (req, res, next) => {
   try {
     const {
       typeOf,
-      roomDetail,
+      // roomDetail,
       roomAmount,
       size,
       optionalRoomDetail,
@@ -79,7 +79,7 @@ exports.createRoom = async (req, res, next) => {
         .json({ message: "This resident is not own by this hotel owner" });
     const room = await Room.create({
       typeOf,
-      roomDetail,
+      // roomDetail,
       roomAmount,
       size,
       optionalRoomDetail,
@@ -103,7 +103,7 @@ exports.updateRoom = async (req, res, next) => {
     const { id } = req.params;
     const {
       typeOf,
-      roomDetail,
+      // roomDetail,
       roomAmount,
       size,
       optionalRoomDetail,
@@ -117,7 +117,7 @@ exports.updateRoom = async (req, res, next) => {
     const [rows] = await Room.update(
       {
         typeOf,
-        roomDetail,
+        // roomDetail,
         roomAmount,
         size,
         optionalRoomDetail,
