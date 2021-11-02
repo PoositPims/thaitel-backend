@@ -13,8 +13,9 @@ const bookingRoute = require("./routes/bookingRoute");
 const AssignRoomRoute = require("./routes/AssignRoomRoute");
 const paymentRoute = require("./routes/paymentRoute");
 const searchRoute = require("./routes/searchRoute");
+const googleRoute = require("./routes/googleRoute");
 
-const { sequelize } = require("./models");
+// const { sequelize } = require("./models");
 // sequelize.sync({ force: false }); // sync แล้วให้ comment เลย
 // sequelize.sync({ alter: true }); //แก้ไขโครงสร้างข้อมูล
 const app = express();
@@ -32,6 +33,7 @@ app.use("/residentImgs", residentImgRoute);
 app.use("/backAccounts", bankAccountRoute);
 app.use("/roomNumbers", roomNumberRoute);
 app.use("/bookings", bookingRoute);
+app.use("/googleLogin", googleRoute);
 app.use("/assignRooms", AssignRoomRoute);
 app.use("/payments", paymentRoute);
 app.use("/search",searchRoute);

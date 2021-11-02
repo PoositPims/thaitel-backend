@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM("CUSTOMER", "ADMIN"),
         allowNull: true,
       },
+      googleId: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
       underscored: true,

@@ -1,4 +1,4 @@
-const { Resident, Room, BookedDaily } = require("../models");
+const { Resident, Room, BookedDaily, ResidentImg } = require("../models");
 const { Op } = require("sequelize");
 // import moment from 'moment';
 var moment = require("moment");
@@ -33,24 +33,27 @@ exports.getAllData = async (req, res, next) => {
     console.log(checkOutDateFormat);
     const residents = await Resident.findAll({
       where: { name: { [Op.like]: `%${resident}%` } },
-      include: {
-        // required: true,// inner join
-        model: Room,
-        include: {
-          model: BookedDaily,
-          where: {
-            date: {
-              [Op.between]: [checkInDateFormat, checkOutDateFormat],
+      include: [
+        {
+          // required: true,// inner join
+          model: Room,
+          include: {
+            model: BookedDaily,
+            where: {
+              date: {
+                [Op.between]: [checkInDateFormat, checkOutDateFormat],
+              },
             },
+            required: false,
           },
-          required: false,
         },
-      },
+        { model: ResidentImg },
+      ],
     });
     // console.log('51')
     console.log(JSON.stringify(residents, null, 2));
     // console.log('44')
-    const avail = residents.filter((item) => {
+    const avail = JSON.parse(JSON.stringify(residents)).filter((item) => {
       for (let room of item.Rooms) {
         // console.log("11");
         // // console.log(JSON.stringify(room, null, 2));
