@@ -39,6 +39,10 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: "CUSTOMER",
         allowNull: true,
       },
+      googleId: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
       underscored: true,
