@@ -8,7 +8,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-  });
+    Date:{
+      type:DataTypes.DATEONLY,
+      allowNull: false,
+    }},
+    {
+      underscored: true
+    }
+  );
+  
   BookedDailay.associate = (models) => {
     BookedDailay.belongsTo(models.Room),
       {
