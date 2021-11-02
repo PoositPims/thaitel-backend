@@ -13,6 +13,9 @@ exports.authenticate = async (req, res, next) => {
     if (!token) {
       return res.status(401).json({ message: "you are unauthorized" });
     }
+
+    console.log(`token`, token)
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
     const hotelOwner = await HotelOwner.findOne({ where: { id: decoded.id } });
@@ -58,6 +61,7 @@ exports.Register = async (req, res, next) => {
 // create (Login owner)
 exports.Login = async (req, res, next) => {
   try {
+    console.log('test')
     const { email, password } = req.body;
     const hotelOwner = await HotelOwner.findOne({ where: { email: email } });
     if (!hotelOwner) {
@@ -74,6 +78,7 @@ exports.Login = async (req, res, next) => {
     const payload = {
       id: hotelOwner.id,
       email: hotelOwner.email,
+      role:'OWNER'
     };
     const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
       expiresIn: 60 * 60 * 24 * 30,

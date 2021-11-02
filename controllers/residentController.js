@@ -82,6 +82,7 @@ exports.createResident = async (req, res, next) => {
 
     // console.log("dateForCheckIn................", dateForCheckIn);
 
+
     const resident = await Resident.create({
       typeOf,
       name,

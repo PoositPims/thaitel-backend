@@ -1,4 +1,7 @@
 const { Room, Resident } = require("../models");
+const cloudinary = require("cloudinary").v2;
+const util = require("util"); // แปลง callback ให้เป็น promise
+const uploadPromise = util.promisify(cloudinary.uploader.upload);
 
 // get all
 exports.getAllRoom = async (req, res, next) => {
@@ -39,10 +42,11 @@ exports.createRoom = async (req, res, next) => {
       noSmoking,
       petAllowed,
       pricePerNight,
-      imgURL,
       maxGuest,
       residentId,
     } = req.body;
+
+    const result = await uploadPromise(req.file.path);
 
     const resident = await Resident.findOne({
       where: { id: residentId, hotelOwnerId: req.hotelOwner.id },
@@ -60,7 +64,7 @@ exports.createRoom = async (req, res, next) => {
       noSmoking,
       petAllowed,
       pricePerNight,
-      imgURL,
+      imgURL:result.secure_url,
       maxGuest,
       residentId,
     });

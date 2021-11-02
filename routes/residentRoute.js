@@ -7,6 +7,6 @@ router.get("/", authenticate, residentController.getAllResident);
 router.get("/:id", authenticate, residentController.getById);
 router.put("/:id", authenticate, residentController.updateResident);
 router.delete("/:id", authenticate, residentController.deleteResident);
-router.post("/createResident", authenticate, residentController.createResident);
+router.post("/createResident", authenticate,residentController.createResident);
 
 module.exports = router;
