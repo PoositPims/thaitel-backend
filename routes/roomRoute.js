@@ -7,12 +7,12 @@ const { authenticate } = require("../controllers/hotelOwnerController");
 
 router.get("/", roomConteoller.getAllRoom);
 router.get("/:id", roomConteoller.getRoomById);
-router.put("/:id", authenticate, roomConteoller.updateRoom);
+router.put("/:id", authenticate,upload.single("cloudInput"), roomConteoller.updateRoom);
 router.delete("/:id", authenticate, roomConteoller.deleteRoom);
 router.post(
   "/createRoom",
-  upload.single("cloudInput"),
   authenticate,
+  upload.single("cloudInput"),
   roomConteoller.createRoom
 );
 
