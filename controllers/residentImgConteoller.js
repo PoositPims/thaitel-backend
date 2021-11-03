@@ -55,6 +55,26 @@ exports.createResidentImg = async (req, res, next) => {
   }
 };
 
+exports.updateResidentImage = async (req,res,next)=>{
+  try {
+    const { residentId } = req.body;
+    if(req.file){
+      const result = await uploadPromise(req.file.path);
+      const residentImg = await ResidentImg.update({
+        imgUrl: result.secure_url,
+      },{
+        where:{residentId}
+      });
+      fs.unlinkSync(req.file.path);
+      return res.status(200).json({  message : 'Update success'  });
+    } else {
+      return res.json({ message : 'Update success' });
+    }
+  } catch (err) {
+    next(err);
+  }
+}
+
 // update ต้องมีไหม ........... !!!!!!!
 
 // delete
