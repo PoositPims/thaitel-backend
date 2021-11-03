@@ -13,5 +13,6 @@ router.post(
   authenticate,
   residentImgConteoller.createResidentImg
 );
+router.put('/',authenticate,upload.single("cloudInput"),residentImgConteoller.updateResidentImage)
 
 module.exports = router;
