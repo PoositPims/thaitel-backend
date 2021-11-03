@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "root",
-    "password": "1234",
-    "database": "thaitel_project_2",
+    "password": "028180623",
+    "database": "thaitel_updated_3",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
