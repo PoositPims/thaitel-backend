@@ -27,7 +27,7 @@ exports.getAllData = async (req, res, next) => {
         { model: ResidentImg },
       ],
     });
-    console.log(JSON.stringify(residents, null, 2));
+    // console.log(JSON.stringify(residents, null, 2));
     const avail = JSON.parse(JSON.stringify(residents)).filter((item) => {
       for (let room of item.Rooms) {
         const bookedDaily = room.BookedDailies;
@@ -45,7 +45,7 @@ exports.getAllData = async (req, res, next) => {
         }
       }
     });
-    console.log(JSON.stringify(avail, null, 2));
+    // console.log(JSON.stringify(avail, null, 2));
     // res.json({ residents });
     res.json({ avail });
   } catch (err) {
@@ -55,7 +55,7 @@ exports.getAllData = async (req, res, next) => {
 exports.getProvince = async (req, res, next) => {
   try {
     const { province } = req.query;
-    console.log(province);
+    // console.log(province);
     const residents = await Resident.findAll({
       where: { province: province },
       include: [
@@ -65,7 +65,7 @@ exports.getProvince = async (req, res, next) => {
         { model: ResidentImg },
       ],
     });
-    console.log(JSON.stringify(residents, null, 2));
+    // console.log(JSON.stringify(residents, null, 2));
     res.json({ residents });
   } catch (err) {
     next(err);
