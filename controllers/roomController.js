@@ -101,6 +101,9 @@ exports.createRoom = async (req, res, next) => {
 exports.updateRoom = async (req, res, next) => {
   try {
     const { id } = req.params;
+
+ 
+
     const {
       typeOf,
       // roomDetail,
@@ -114,19 +117,25 @@ exports.updateRoom = async (req, res, next) => {
       maxGuest,
       residentId,
     } = req.body;
+
+    const objToCreate = { typeOf,
+      // roomDetail,
+      roomAmount,
+      size,
+      optionalRoomDetail,
+      noSmoking,
+      petAllowed,
+      pricePerNight,
+      imgURL:imgURL,
+      maxGuest}
+
+      if(req.file){
+        const result = await uploadPromise(req.file.path);
+        objToCreate.imgURL =  result.secure_url
+      }
+
     const [rows] = await Room.update(
-      {
-        typeOf,
-        // roomDetail,
-        roomAmount,
-        size,
-        optionalRoomDetail,
-        noSmoking,
-        petAllowed,
-        pricePerNight,
-        imgURL,
-        maxGuest,
-      },
+      objToCreate,
       {
         where: {
           id,
