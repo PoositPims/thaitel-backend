@@ -1,12 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
-  const BookedDailay = sequelize.define(
+  const BookedDaily = sequelize.define(
     "BookedDaily",
     {
       roomRemaining: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      BookedRoom: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
@@ -16,13 +12,13 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: "booked_dailies",
+      // tableName: "booked_dailies",
       underscored: true,
     }
   );
 
-  BookedDailay.associate = (models) => {
-    BookedDailay.belongsTo(models.Room),
+  BookedDaily.associate = (models) => {
+    BookedDaily.belongsTo(models.Room),
       {
         foreignKey: {
           name: "roomId",
@@ -32,5 +28,5 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "RESTRICT",
       };
   };
-  return BookedDailay;
+  return BookedDaily;
 };
