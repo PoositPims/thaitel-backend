@@ -90,6 +90,7 @@ exports.Login = async (req, res, next) => {
       email: user.email,
       role: user.role,
       firstName: user.firstName,
+      lastName: user.lastName,
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
@@ -118,7 +119,7 @@ exports.resetPassword = async (req, res, next) => {
       console.log(object);
     }
     const token = buffer.toString("hex");
-    User.findOne({ email: req.body.email }).then((user) => {
+    User.findOne({ email: req.body.email }).then(user => {
       if (!user) {
         return res
           .status(422)
@@ -126,7 +127,7 @@ exports.resetPassword = async (req, res, next) => {
       }
       user.resetToken = token;
       user.expireToken = Date.now() + 3600000;
-      user.save().then((result) => {
+      user.save().then(result => {
         transporter.sendMail({
           to: user.email,
           from: "tryitfordevelop@gmail.com",
