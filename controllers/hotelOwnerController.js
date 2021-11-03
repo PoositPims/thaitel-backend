@@ -80,6 +80,7 @@ exports.Login = async (req, res, next) => {
       email: hotelOwner.email,
       role: "OWNER",
       firstName: hotelOwner.firstName,
+      lastName: hotelOwner.lastName,
     };
     const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
       expiresIn: 60 * 60 * 24 * 30,

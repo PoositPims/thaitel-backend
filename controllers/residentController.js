@@ -211,7 +211,7 @@ exports.createResident = async (req, res, next) => {
       timeCheckOutStart,
       timeCheckOutEnd,
       canCancle,
-      discription,
+      description,
       hotelOwnerId,
       services, // [{ serviceId: 1, isFree: true, pricePerTime: 0 }, { serviceId: 2, isFree: false, pricePerTime: 100 }]
       // ให้หน้าบ้านส่งมาแบบนี้ (services).............. !!!!!!!!!!!!!!!!!!!!
@@ -220,7 +220,6 @@ exports.createResident = async (req, res, next) => {
     // const dateForCheckOut = new Date(dateCheckOut);
 
     // console.log("dateForCheckIn................", dateForCheckIn);
-
 
     const resident = await Resident.create({
       typeOf,
@@ -238,7 +237,7 @@ exports.createResident = async (req, res, next) => {
       // dateCheckIn: dateForCheckIn,
       // dateCheckOut: dateForCheckOut,
       canCancle,
-      discription,
+      description,
       hotelOwnerId: req.hotelOwner.id,
       services,
     });
@@ -303,6 +302,7 @@ exports.updateResident = async (req, res, next) => {
       timeCheckOutStart,
       timeCheckOutEnd,
       canCancle,
+      description,
       hotelOwnerId,
     } = req.body;
     const [rows] = await Resident.update(
@@ -320,6 +320,7 @@ exports.updateResident = async (req, res, next) => {
         timeCheckOutStart,
         timeCheckOutEnd,
         canCancle,
+        description,
       },
       {
         where: { id },
