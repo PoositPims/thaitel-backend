@@ -66,6 +66,7 @@ exports.Login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ where: { email: email } });
+    // console.log("user...........................", user);
     if (!user) {
       return res.status(400).json({ message: "invalid email or password" });
     }
@@ -84,7 +85,7 @@ exports.Login = async (req, res, next) => {
     const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
       expiresIn: 60 * 60 * 24 * 30,
     });
-    console.log(token);
+    // console.log(token);
     // let info = await transporter.sendMail({
     //   from: '"tryitfordevelop@gmail.com', // sender address
     //   // to: "tryitfordevelop@gmail.com, baz@example.com", // list of receivers
@@ -94,6 +95,64 @@ exports.Login = async (req, res, next) => {
     //   html: "<b>Hello world?</b>", // html body
     // });
     res.json({ message: "success login", token });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// create (Facebook Login......)
+exports.facebookLogin = async (req, res, next) => {
+  try {
+    const { email, facebookId, firstName, lastName } = req.body;
+    const user = await User.findOne({
+      where: { email, facebookId, firstName, lastName },
+    });
+    console.log("user.....................", user);
+
+    if (user) {
+      const payload = {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        facebookId: user.facebookId,
+      };
+      const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+        expiresIn: 60 * 60 * 24 * 30,
+      });
+      console.log("token.....................", token);
+      res.json({ message: "success login", token });
+    } else if (!user) {
+      const user = await User.create({
+        firstName,
+        lastName,
+        email,
+        facebookId,
+      });
+      const payload = {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        facebookId: user.facebookId,
+      };
+      const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+        expiresIn: 60 * 60 * 24 * 30,
+      });
+      console.log("token.....................", token);
+      // res.json({ message: "success login", token });
+      res.json({ message: "success login", token });
+      // const payload = {
+      //   id: user.id,
+      //   email: user.email,
+      //   role: user.role,
+      //   firstName: user.firstName,
+      //   lastName: user.lastName,
+      //   facebookId: user.facebookId,
+      // };
+    }
   } catch (err) {
     next(err);
   }

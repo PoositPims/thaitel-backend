@@ -13,14 +13,13 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
         validate: {
           isEmail: true,
         },
       },
       telephone: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       resetToken: {
         type: DataTypes.STRING,
@@ -32,11 +31,15 @@ module.exports = (sequelize, DataTypes) => {
       },
       password: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       role: {
         type: DataTypes.ENUM("CUSTOMER", "ADMIN"),
         defaultValue: "CUSTOMER",
+        allowNull: true,
+      },
+      facebookId: {
+        type: DataTypes.STRING,
         allowNull: true,
       },
       googleId: {
