@@ -22,12 +22,21 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      resetToken: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      expireToken: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
       password: {
         type: DataTypes.STRING,
         allowNull: true,
       },
       role: {
         type: DataTypes.ENUM("CUSTOMER", "ADMIN"),
+        defaultValue: "CUSTOMER",
         allowNull: true,
       },
       googleId: {
