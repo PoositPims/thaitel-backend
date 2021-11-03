@@ -81,13 +81,21 @@ exports.updateBankAccount = async (req, res, next) => {
     const { id } = req.params;
     const { bankName, AccountNumber, AccountName, imageIdURL, residentId } =
       req.body;
-    const [rows] = await BankAccount.update(
-      {
+      
+      const objToCreate = {
         bankName,
         AccountNumber,
         AccountName,
         imageIdURL,
-      },
+      }
+  
+        if(req.file){
+          const result = await uploadPromise(req.file.path);
+          objToCreate.imageIdURL =  result.secure_url
+        }
+
+    const [rows] = await BankAccount.update(
+      objToCreate,
       {
         where: {
           id,

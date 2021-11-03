@@ -6,6 +6,7 @@ const {
   BookingItem,
   Rooms,
   Service,
+  BankAccount
 } = require("../models");
 
 // get all resident
@@ -51,7 +52,9 @@ exports.getById = async (req, res, next) => {
         },
         {
           model: ServiceItem,
-        },
+        },{
+          model:BankAccount
+        }
       ],
     });
 
@@ -69,26 +72,15 @@ exports.getById = async (req, res, next) => {
 
     const rooms = resultRoomParse.map((room) => {
       const {
-        id,
-        typeOf,
-        // roomDetail,
-        pricePerNight,
-        imgURL,
         BookingItems,
-        roomAmount,
       } = room;
       const countBookedRoom = BookingItems.reduce(
         (a, c) => a + c.roomBookingAmount,
         0
       );
       return {
-        id,
-        typeOf,
-        // roomDetail,
-        pricePerNight,
-        imgURL,
+        ...room,
         countBookedRoom,
-        roomAmount,
       };
     });
 
@@ -132,14 +124,6 @@ exports.getAllResByOwner = async (req, res, next) => {
         },
         {
           model: Room,
-          attributes: [
-            "typeOf",
-            // "roomDetail",
-            "pricePerNight",
-            "imgURL",
-            "id",
-            "roomAmount",
-          ],
           include: {
             model: BookingItem,
             attributes: ["roomBookingAmount"],
@@ -172,26 +156,15 @@ exports.getAllResByOwner = async (req, res, next) => {
       //   // const imgUrl = Resident.ResidentImgs[0].imgUrl;
       const rooms = Rooms.map((room) => {
         const {
-          id,
-          typeOf,
-          // roomDetail,
-          pricePerNight,
-          imgURL,
           BookingItems,
-          roomAmount,
         } = room;
         const countBookedRoom = BookingItems.reduce(
           (a, c) => a + c.roomBookingAmount,
           0
         );
         return {
-          id,
-          typeOf,
-          // roomDetail,
-          pricePerNight,
-          imgURL,
+          ...room,
           countBookedRoom,
-          roomAmount,
         };
       });
       return {
@@ -276,6 +249,7 @@ exports.createResident = async (req, res, next) => {
       items.residentId = resident.id;
       items.isFree = item.isFree;
       items.pricePerTime = item.pricePerTime;
+      items.isHaving = item.isHaving;
       return items;
     });
 
