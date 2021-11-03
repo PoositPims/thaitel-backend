@@ -20,11 +20,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       telephone: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       password: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       role: {
         type: DataTypes.ENUM("CUSTOMER", "ADMIN"),
