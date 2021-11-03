@@ -39,28 +39,59 @@ exports.getAllResident = async (req, res, next) => {
 exports.getById = async (req, res, next) => {
   try {
     const { id } = req.params;
+
     const resident = await Resident.findOne({
       where: {
-        id,
+        id: id,
       },
       include: [
         {
           model: ResidentImg,
+          attributes: ["imgUrl"],
         },
         {
           model: ServiceItem,
         },
-        {
-          model: Room,
-        },
       ],
     });
 
-    const rooms = await Room.findAll({
+    const resultRoom = await Room.findAll({
       where: {
         residentId: id,
       },
+      include: {
+        model: BookingItem,
+        attributes: ["roomBookingAmount"],
+      },
     });
+
+    const resultRoomParse = JSON.parse(JSON.stringify(resultRoom));
+
+    const rooms = resultRoomParse.map((room) => {
+      const {
+        id,
+        typeOf,
+        // roomDetail,
+        pricePerNight,
+        imgURL,
+        BookingItems,
+        roomAmount,
+      } = room;
+      const countBookedRoom = BookingItems.reduce(
+        (a, c) => a + c.roomBookingAmount,
+        0
+      );
+      return {
+        id,
+        typeOf,
+        // roomDetail,
+        pricePerNight,
+        imgURL,
+        countBookedRoom,
+        roomAmount,
+      };
+    });
+
     // console.log("id........................", id);
     res.json({ resident, rooms });
     // console.log(JSON.stringify(tasks, null, 2));
@@ -207,6 +238,7 @@ exports.createResident = async (req, res, next) => {
       timeCheckOutStart,
       timeCheckOutEnd,
       canCancle,
+      description,
       hotelOwnerId,
       services, // [{ serviceId: 1, isFree: true, pricePerTime: 0 }, { serviceId: 2, isFree: false, pricePerTime: 100 }]
       // ให้หน้าบ้านส่งมาแบบนี้ (services).............. !!!!!!!!!!!!!!!!!!!!
@@ -215,7 +247,6 @@ exports.createResident = async (req, res, next) => {
     // const dateForCheckOut = new Date(dateCheckOut);
 
     // console.log("dateForCheckIn................", dateForCheckIn);
-
 
     const resident = await Resident.create({
       typeOf,
@@ -233,6 +264,7 @@ exports.createResident = async (req, res, next) => {
       // dateCheckIn: dateForCheckIn,
       // dateCheckOut: dateForCheckOut,
       canCancle,
+      description,
       hotelOwnerId: req.hotelOwner.id,
       services,
     });
@@ -296,6 +328,7 @@ exports.updateResident = async (req, res, next) => {
       timeCheckOutStart,
       timeCheckOutEnd,
       canCancle,
+      description,
       hotelOwnerId,
     } = req.body;
     const [rows] = await Resident.update(
@@ -313,6 +346,7 @@ exports.updateResident = async (req, res, next) => {
         timeCheckOutStart,
         timeCheckOutEnd,
         canCancle,
+        description,
       },
       {
         where: { id },

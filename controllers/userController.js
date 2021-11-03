@@ -3,18 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
-
-// let transporter = nodemailer.createTransport(transport[, defaults])
-
-// let transporter = nodemailer.createTransport({
-//   host: "smtp.ethereal.email",
-//   port: 587,
-//   secure: false, // true for 465, false for other ports
-//   auth: {
-//     user: testAccount.user, // generated ethereal user
-//     pass: testAccount.pass, // generated ethereal password
-//   },
-// });
+const { Op } = require("sequelize");
 
 let transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -96,15 +85,15 @@ exports.Login = async (req, res, next) => {
       expiresIn: 60 * 60 * 24 * 30,
     });
     console.log(token);
-    let info = await transporter.sendMail({
-      from: '"tryitfordevelop@gmail.com', // sender address
-      // to: "tryitfordevelop@gmail.com, baz@example.com", // list of receivers
-      to: email, // list of receivers
-      subject: "Hello ✔", // Subject line
-      text: "Hello world?", // plain text body
-      html: "<b>Hello world?</b>", // html body
-    });
-    res.json({ message: "success login", token, info });
+    // let info = await transporter.sendMail({
+    //   from: '"tryitfordevelop@gmail.com', // sender address
+    //   // to: "tryitfordevelop@gmail.com, baz@example.com", // list of receivers
+    //   to: email, // list of receivers
+    //   subject: "Hello ✔", // Subject line
+    //   text: "Hello world?", // plain text body
+    //   html: "<b>Hello world?</b>", // html body
+    // });
+    res.json({ message: "success login", token });
   } catch (err) {
     next(err);
   }
@@ -113,12 +102,16 @@ exports.Login = async (req, res, next) => {
 // create (forget password)
 exports.resetPassword = async (req, res, next) => {
   // try {
+  const { email } = req.body;
+  // console.log("email.................", email);
   crypto.randomBytes(32, (err, buffer) => {
     if (err) {
       console.log(object);
     }
     const token = buffer.toString("hex");
-    User.findOne({ email: req.body.email }).then((user) => {
+    // console.log("buffer......................", buffer);
+    // console.log("token......................", token);
+    User.findOne({ where: { email: email } }).then((user) => {
       if (!user) {
         return res
           .status(422)
@@ -128,7 +121,7 @@ exports.resetPassword = async (req, res, next) => {
       user.expireToken = Date.now() + 3600000;
       user.save().then((result) => {
         transporter.sendMail({
-          to: user.email,
+          to: email,
           from: "tryitfordevelop@gmail.com",
           subject: "password reset", // Subject line
           text: "Hello world?", // plain text body
@@ -138,11 +131,42 @@ exports.resetPassword = async (req, res, next) => {
           <h5>click on this <a href="http://localhost:3000/reset/${token}">link</a> to reset password</h5>
           `,
         });
-        res.json({ message: "check your email" });
+        res.json({ message: "check your email", token });
       });
     });
   });
   // } catch (err) {
   // next(err);
   // }
+};
+
+exports.newPassword = async (req, res, next) => {
+  // const { email } = req.body;
+  const newPassword = req.body.password;
+  const sentToken = req.body.token;
+  console.log("sentToken............", sentToken);
+  console.log("newPassword..........", newPassword);
+  User.findOne({
+    where: {
+      resetToken: sentToken,
+      expireToken: { [Op.gt]: Date.now() },
+    },
+  })
+    .then((user) => {
+      if (!user) {
+        return res.status(422).json({ error: "Try again, session expired" });
+      }
+
+      bcrypt.hash(newPassword, 12).then((hashedPassword) => {
+        user.password = hashedPassword;
+        user.resetToken = undefined;
+        user.expireToken = undefined;
+        user.save().then((savedUser) => {
+          res.json({ message: "password updated success" });
+        });
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
