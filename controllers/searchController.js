@@ -5,9 +5,9 @@ var moment = require("moment");
 exports.getAllData = async (req, res, next) => {
   try {
     const { resident, checkin, roominput } = req.query;
-    console.log(resident)
-    console.log(checkin)
-    console.log(roominput)
+    console.log(resident);
+    console.log(checkin);
+    console.log(roominput);
     const checkInDate = checkin.split(",")[0].slice(0, 16);
     const checkInDateFormat = new Date(checkInDate);
     const checkOutDate = checkin.split(",")[1].slice(0, 16);
@@ -60,7 +60,7 @@ exports.getAllData = async (req, res, next) => {
 exports.getProvince = async (req, res, next) => {
   try {
     const { province } = req.query;
-    console.log(province);
+    // console.log(province);
     const residents = await Resident.findAll({
       where: { province: province },
       include: [
@@ -70,7 +70,7 @@ exports.getProvince = async (req, res, next) => {
         { model: ResidentImg },
       ],
     });
-    console.log(JSON.stringify(residents, null, 2));
+    // console.log(JSON.stringify(residents, null, 2));
     res.json({ residents });
   } catch (err) {
     next(err);
