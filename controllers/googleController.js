@@ -34,8 +34,8 @@ exports.Google = async (req, res, next) => {
       const payload = {
         id: userCreate.id,
         email: userCreate.email,
-        firstName: userCreate.firstname,
-        lastName: userCreate.lastname,
+        firstName: userCreate.firstName,
+        lastName: userCreate.lastName,
         role: userCreate.role,
       };
       console.log(payload);

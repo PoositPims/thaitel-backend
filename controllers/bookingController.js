@@ -57,6 +57,7 @@ exports.getByUserId = async (req, res, next) => {
               "pricePerNight",
             ],
             include: {
+              paranoid:false,
               model: Resident,
               include: { model: ResidentImg, attributes: ["imgUrl"] },
               attributes: [
@@ -148,6 +149,7 @@ exports.createBooking = async (req, res, next) => {
         id: roomId,
       },
       include: {
+        paranoid:false,
         model: Resident,
         required: true,
       },
