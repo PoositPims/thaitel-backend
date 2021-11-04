@@ -64,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true,
     }
   );
-  Resident.associate = (models) => {
+  Resident.associate = models => {
     Resident.belongsTo(models.HotelOwner, {
       foreignKey: {
         name: "hotelOwnerId",
