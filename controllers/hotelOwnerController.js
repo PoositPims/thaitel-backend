@@ -91,3 +91,53 @@ exports.Login = async (req, res, next) => {
     next(err);
   }
 };
+
+// create (Facebook Login......)
+exports.ownerFacebookLogin = async (req, res, next) => {
+  try {
+    const { email, facebookId, firstName, lastName } = req.body;
+    const user = await HotelOwner.findOne({
+      where: { email, facebookId, firstName, lastName },
+    });
+    // console.log("user.....................", user);
+
+    if (user) {
+      const payload = {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        facebookId: user.facebookId,
+      };
+      const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+        expiresIn: 60 * 60 * 24 * 30,
+      });
+      // console.log("token.....................", token);
+      res.json({ message: "success login", token });
+    } else if (!user) {
+      const user = await HotelOwner.create({
+        firstName,
+        lastName,
+        email,
+        facebookId,
+      });
+      const payload = {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        facebookId: user.facebookId,
+      };
+      const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+        expiresIn: 60 * 60 * 24 * 30,
+      });
+      // console.log("token.....................", token);
+      // res.json({ message: "success login", token });
+      res.json({ message: "success login", token });
+    }
+  } catch (err) {
+    next(err);
+  }
+};
