@@ -20,15 +20,15 @@ module.exports = (sequelize, DataTypes) => {
       },
       telephone: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       password: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       idCard: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       idCardImage: {
         type: DataTypes.TEXT,
@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
       role: {
         type: DataTypes.STRING,
         defaultValue: "OWNER",
+        allowNull: true,
+      },
+      facebookId: {
+        type: DataTypes.STRING,
         allowNull: true,
       },
     },
