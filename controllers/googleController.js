@@ -7,7 +7,7 @@ exports.Google = async (req, res, next) => {
     console.log(JSON.stringify(user, null, 2));
     // console.log(user)
     if (user) {
-      console.log("10");
+      // console.log("10");
       const payload = {
         id: user.id,
         email: user.email,
@@ -19,9 +19,9 @@ exports.Google = async (req, res, next) => {
         expiresIn: 30 * 60 * 60 * 24,
       });
       res.json({ message: "success logged in", token });
-      console.log(payload);
+      // console.log(payload);
     } else {
-      console.log("23");
+      // console.log("23");
       const userCreate = await User.create({
         firstName: firstName,
         lastName: lastName,
@@ -34,11 +34,11 @@ exports.Google = async (req, res, next) => {
       const payload = {
         id: userCreate.id,
         email: userCreate.email,
-        firstName: userCreate.firstname,
-        lastName: userCreate.lastname,
+        firstName: userCreate.firstName,
+        lastName: userCreate.lastName,
         role: userCreate.role,
       };
-      console.log(payload);
+      // console.log(payload);
       const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
         expiresIn: 30 * 60 * 60 * 24,
       });

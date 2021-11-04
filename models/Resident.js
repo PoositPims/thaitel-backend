@@ -65,6 +65,7 @@ module.exports = (sequelize, DataTypes) => {
       // },
     },
     {
+      paranoid: true,
       underscored: true,
     }
   );

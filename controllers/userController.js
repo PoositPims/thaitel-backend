@@ -186,9 +186,69 @@ exports.resetPassword = async (req, res, next) => {
           subject: "password reset", // Subject line
           text: "Hello world?", // plain text body
           // html: "<b>Hello world?</b>", // html body
+          // <div style={{background-color:red}}>
           html: `
-          <p>you requested for password reset</p>
-          <h5>click on this <a href="http://localhost:3000/reset/${token}">link</a> to reset password</h5>
+          <div style='background-color:#f5f5f5;'>
+          <div style='background-color:#07133C;'>
+           <h1 style="font-family:'Noto Sans Thai' ,sans-serif ; color:white ; text-align:center ",  >THAITEL</h1>
+         </div>
+         
+         <div style='display:flex;
+                     align-items: center;
+             justify-content: center;'>
+           <div style='background-color:white; width:80%;  
+                     padding:1em; 
+                     text-align:center; 
+                     margin-top:20px;margin-bottom:20px;  
+                     '>
+         <p style=" display:flex;font-family:'Noto Sans Thai' ,sans-serif ";>สวัสดีคุณ ${user.firstName}</p>
+         <p>ลืมรหัาผ่านใช่หรือไม่ ?</p>
+         <p>ไม่ใช่ปัญหา คลิ๊กที่นี่เพื่อที่จะตั้งรหัสผ่านของคุณใหม่</p>
+         <a href="http://localhost:3000/reset/${token}" >
+          <button style='background-color:#c62828; color:white; 
+                          border: none;
+                          cursor: pointer;
+                          border-radius:5px;
+                          box-shadow: 0 4px 20px 0 rgb(61 71 82 / 10%), 0 0 0 0 rgb(0 127 255 / 0%);
+                          padding: 15px 32px;
+                          width: 300px;
+                          transition: all 200ms ease;
+                          font-family: "Noto Sans Thai",sans-serif;
+                          text-decoration:none;'>ตั้งรหัสผ่านใหม่</button></a>
+         </div>  
+           </div>
+           
+          <div style='display:flex;
+                     align-items: center;
+             justify-content: center;'>
+            <div  style='background-color:white; width:80%;  
+                     padding:1em; 
+                   ; 
+                     
+                     '>
+                
+          <div style='display:flex;'>
+         <p style='margin-right:20px; font-size: 30px;'>ติดต่อเรา</p>
+         </div>
+              
+         <div style='display:flex;'>
+         <p style='margin-right:20px;'>Email : </p>
+         <p> Thaitel@gmail.com</p>
+         </div>
+              
+         <div style='display:flex;'>
+         <p style='margin-right:20px;'>Telephone : </p>
+         <p> 02-2222222</p>
+         </div>
+         
+          <div style='border-top: thick double #c62828;'>
+         <p>มอบความสุขกับช่วงเวลาการพักผ่อนของคุณ</p>
+         <p>เพื่อโรงแรมไทย เพื่อคนไทย เพื่อทุก ๆ คน</p>
+         <h1 style="font-family:'Noto Sans Thai' ,sans-serif ; color:#07133C ;  ",  >THAITEL</h1>
+         </div>
+              </div>
+             </div>
+         </div>
           `,
         });
         res.json({ message: "check your email", token });
@@ -204,8 +264,8 @@ exports.newPassword = async (req, res, next) => {
   // const { email } = req.body;
   const newPassword = req.body.password;
   const sentToken = req.body.token;
-  console.log("sentToken............", sentToken);
-  console.log("newPassword..........", newPassword);
+  // console.log("sentToken............", sentToken);
+  // console.log("newPassword..........", newPassword);
   User.findOne({
     where: {
       resetToken: sentToken,
