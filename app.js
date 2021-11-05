@@ -39,7 +39,7 @@ app.use("/payments", paymentRoute);
 app.use("/search", searchRoute);
 // เอาไว้ดักเวลาหาไม่เจอ
 app.use((req, res, next) => {
-  res.status(404).json({ messahe: "this resource is not found" });
+  res.status(404).json({ message: "this resource is not found" });
 });
 
 // handle error
