@@ -53,7 +53,7 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true,
     }
   );
-  HotelOwner.associate = (models) => {
+  HotelOwner.associate = models => {
     HotelOwner.hasMany(models.Resident, {
       foreignKey: {
         name: "hotelOwnerId",

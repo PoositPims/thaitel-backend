@@ -6,7 +6,7 @@ const {
   BookingItem,
   Rooms,
   Service,
-  BankAccount
+  BankAccount,
 } = require("../models");
 
 // get all resident
@@ -52,9 +52,10 @@ exports.getById = async (req, res, next) => {
         },
         {
           model: ServiceItem,
-        },{
-          model:BankAccount
-        }
+        },
+        {
+          model: BankAccount,
+        },
       ],
     });
 
@@ -70,10 +71,8 @@ exports.getById = async (req, res, next) => {
 
     const resultRoomParse = JSON.parse(JSON.stringify(resultRoom));
 
-    const rooms = resultRoomParse.map((room) => {
-      const {
-        BookingItems,
-      } = room;
+    const rooms = resultRoomParse.map(room => {
+      const { BookingItems } = room;
       const countBookedRoom = BookingItems.reduce(
         (a, c) => a + c.roomBookingAmount,
         0
@@ -138,7 +137,7 @@ exports.getAllResByOwner = async (req, res, next) => {
 
     // console.log("resultParse...............", resultParse);
 
-    const resultResident = resultParse.map((item) => {
+    const resultResident = resultParse.map(item => {
       const {
         id,
         typeOf,
@@ -154,10 +153,8 @@ exports.getAllResByOwner = async (req, res, next) => {
         ServiceItems,
       } = item;
       //   // const imgUrl = Resident.ResidentImgs[0].imgUrl;
-      const rooms = Rooms.map((room) => {
-        const {
-          BookingItems,
-        } = room;
+      const rooms = Rooms.map(room => {
+        const { BookingItems } = room;
         const countBookedRoom = BookingItems.reduce(
           (a, c) => a + c.roomBookingAmount,
           0
@@ -243,7 +240,7 @@ exports.createResident = async (req, res, next) => {
     });
 
     // สร้างแบบนี้ [{ serviceId: 1, isFree: true, pricePerTime: 0 }, {}]
-    const serviceItemToCreate = services.map((item) => {
+    const serviceItemToCreate = services.map(item => {
       let items = {};
       items.serviceName = item.serviceName;
       items.residentId = resident.id;
@@ -303,8 +300,19 @@ exports.updateResident = async (req, res, next) => {
       timeCheckOutEnd,
       canCancle,
       description,
+      services,
       hotelOwnerId,
     } = req.body;
+
+    services.forEach(async service => {
+      const serviceToUpdate = await ServiceItem.findByPk(service.id);
+      serviceToUpdate.serviceName = service.serviceName;
+      serviceToUpdate.isFree = service.isFree;
+      serviceToUpdate.isHaving = service.isHaving;
+      serviceToUpdate.pricePerTime = service.pricePerTime;
+      serviceToUpdate.save();
+    });
+
     const [rows] = await Resident.update(
       {
         typeOf,
