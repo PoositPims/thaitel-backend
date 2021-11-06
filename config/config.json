@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "root",
-    "password": "028180623",
-    "database": "thaitel_updated_3",
+    "password": "Beefly888@",
+    "database": "ping_database",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
