@@ -45,6 +45,13 @@ exports.Register = async (req, res, next) => {
     const { firstName, lastName, email, telephone, password } = req.body;
     // รอ hash password
     const hashedPassword = await bcrypt.hash(password, 12);
+     
+    //แพรลอง
+    const checkUser = await User.findOne({ where: { email:email } })
+    
+    if (checkUser) {
+      return res.status(400).json({ message: "email is already used" });
+    }
     const user = await User.create({
       firstName,
       lastName,
