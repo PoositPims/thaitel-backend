@@ -141,3 +141,54 @@ exports.ownerFacebookLogin = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.ownerGoogleLogin = async (req, res, next) => {
+  try {
+    const { email, firstName, lastName, googleId } = req.body;
+    // console.log('148')
+    const user = await HotelOwner.findOne({ where: { email, googleId } });
+    // console.log('149')
+    console.log(JSON.stringify(user, null, 2));
+    // console.log(user)
+    if (user) {
+      // console.log("10");
+      const payload = {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role,
+      };
+      const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+        expiresIn: 30 * 60 * 60 * 24,
+      });
+      res.json({ message: "success logged in", token });
+      // console.log(payload);
+    } else {
+      // console.log("23");
+      const userCreate = await HotelOwner.create({
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        telephone: null,
+        password: null,
+        role: "CUSTOMER",
+        googleId: googleId,
+      });
+      const payload = {
+        id: userCreate.id,
+        email: userCreate.email,
+        firstName: userCreate.firstName,
+        lastName: userCreate.lastName,
+        role: userCreate.role,
+      };
+      // console.log(payload);
+      const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+        expiresIn: 30 * 60 * 60 * 24,
+      });
+      res.json({ message: "success logged in", token });
+    }
+  } catch (err) {
+    next(err);
+  }
+};
