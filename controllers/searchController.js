@@ -43,10 +43,10 @@ exports.getAllData = async (req, res, next) => {
         { model: ResidentImg },
       ],
     });
-    // console.log(JSON.stringify(residents, null, 2));
+    console.log(JSON.stringify(residents, null, 2));
 
-    const avail = JSON.parse(JSON.stringify(residents)).filter((item) => {
-      for (let room of item.Rooms) {
+    const avail = JSON.parse(JSON.stringify(residents)).filter((item1) => {
+      for (let room of item1.Rooms) {
         const bookedDaily = room.BookedDailies;
         if (bookedDaily.length > 0) {
           const filter = bookedDaily.filter((item) => {

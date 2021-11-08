@@ -40,6 +40,14 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: "OWNER",
         allowNull: true,
       },
+      resetToken: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      expireToken: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
       facebookId: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -53,7 +61,7 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true,
     }
   );
-  HotelOwner.associate = models => {
+  HotelOwner.associate = (models) => {
     HotelOwner.hasMany(models.Resident, {
       foreignKey: {
         name: "hotelOwnerId",
