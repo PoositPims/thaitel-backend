@@ -135,7 +135,7 @@ exports.createPaymentReq = async (req, res, next) => {
     // });
     await booking.update({ chillpayTransaction: TransactionId.toString() });
     res.status(201).json({ ChillpayData: data });
-    console.log("data.................................", data);
+    // console.log("data.................................", data);
   } catch (err) {
     next(err);
   }
@@ -151,8 +151,8 @@ exports.paymentResult = async (req, res, next) => {
     //   },
     // });
     // console.log(object)
-    console.log("transNo....................................", transNo);
-    console.log("respCode....................................", respCode);
+    // console.log("transNo....................................", transNo);
+    // console.log("respCode....................................", respCode);
     const booking = await Booking.findOne({
       where: {
         // transactionId: transNo.toString(),

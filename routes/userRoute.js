@@ -7,5 +7,6 @@ router.post("/reset-password", userController.resetPassword);
 router.post("/new-password", userController.newPassword);
 router.post("/login", userController.Login);
 router.post("/facebookLogin", userController.facebookLogin);
+router.post("/googleLogin", userController.googleLogin);
 
 module.exports = router;
